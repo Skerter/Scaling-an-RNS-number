@@ -2,6 +2,13 @@ import numpy as np
 
 
 def calculate_x_rns(A, n, p):
+    """
+    Перевод числа в СОК
+    :param A: Само число
+    :param n: Количество модулей
+    :param p: Модули СОКа
+    :return: Число в СОК (массив)
+    """
     x_rns = np.zeros((1, n))
     for i in range(n):
         x_rns[0, i] = A % p[0, i]
@@ -135,18 +142,18 @@ w_i1 = np.array([[0, -2, 1, 0, 2, 0]], np.float64)   # Веса для C_J(P)
 C_K_P = 2717  # Я не знаю как оно вычисляется
 w_i2 = np.array([[-1, 0, 0, -2, 0, 6]], np.float64)  # Веса для C_K(P) TODO: Понять, как берутся эти веса
 
-C_J_Bi = calculate_C_Bi(P, p, w_i1, n, C_J_P)
-C_K_Bi = calculate_C_Bi(P, p, w_i2, n, C_K_P)
+C_J_Bi = calculate_C_Bi(P, p, w_i1, n, C_J_P)  # C_J(Bi)
+C_K_Bi = calculate_C_Bi(P, p, w_i2, n, C_K_P)  # C_K(Bi)
 print(C_J_Bi)
 print(C_K_Bi)
 
-dC_Bi = np.zeros((1, n))
+dC_Bi = np.zeros((1, n))  # dC(Bi)
 for i in range(n):
     dC_Bi[0, i] = C_J_Bi[0, i] - C_K_Bi[0, i]
 print(dC_Bi)
 
-X = 1859107
-X_rns = calculate_x_rns(X, n, p)
+X = 1859107  # Это число в примере масштабируется на 2717
+X_rns = calculate_x_rns(X, n, p)  # Перевод числа Х в СОК
 print(X_rns)
 
 a, b, dC_X_mod20 = 0, 0, 0
@@ -180,6 +187,6 @@ C_J_X_rns = np.array([[C_J_mod7, C_J_mod11, C_J_mod13, C_J_mod17, C_J_mod19, C_J
 print(C_J_X_rns)
 
 C_J_X = 0
-for i in range(n):
-    C_J_X += C_J_X_rns[0, i] * P_i[0, i] * P_i_1[0, i]
+for i in range(n):                                      # Перевод числа в позиционную систему счисления
+    C_J_X += C_J_X_rns[0, i] * P_i[0, i] * P_i_1[0, i]  # с использованием КТО
 print(C_J_X % P)
