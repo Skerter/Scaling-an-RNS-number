@@ -38,10 +38,10 @@ def orthogonal_bases(p, n, P_i):
 
 
 def calculate_x_rns(A, n, p):
-    A_RNS = np.zeros((1, n))
+    x_rns = np.zeros((1, n))
     for i in range(n):
-        A_RNS[0, i] = A % p[0, i]
-    return A_RNS
+        x_rns[0, i] = A % p[0, i]
+    return x_rns
 
 
 def define_w_i(n):
