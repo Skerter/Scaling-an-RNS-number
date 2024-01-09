@@ -127,10 +127,13 @@ n = len(p[0])  # Количество модулей
 w_i = np.array([[-1, 1, 1, -1, 2, -1]], np.float64)  # Веса, которые я взял рандомно
 
 P = calculate_P(p, n)         # Динамический диапазон
+print("P:", P)
 P_i = calculate_P_i(p, n, P)  # <НАЗВАНИЕ P_i>
+print("P_i:", P_i)
 P_i_1 = np.zeros((1, n))
 for i in range(n):  # Вычисление мультипликативных инверсий
     P_i_1[0, i] = mul_inv(P_i[0, i], p[0, i])
+print("P_i^-1:", P_i_1)
 C_P = calculate_C_P(w_i, P_i, n)
 B = orthogonal_bases(p, n, P_i, P_i_1)  # Вычисление ортогональных базисов
 C_Bi = calculate_C_Bi(P, p, w_i, n, C_P)
@@ -144,17 +147,20 @@ w_i2 = np.array([[-1, 0, 0, -2, 0, 6]], np.float64)  # Веса для C_K(P) TO
 
 C_J_Bi = calculate_C_Bi(P, p, w_i1, n, C_J_P)  # C_J(Bi)
 C_K_Bi = calculate_C_Bi(P, p, w_i2, n, C_K_P)  # C_K(Bi)
-print(C_J_Bi)
-print(C_K_Bi)
+print("C_J(Bi):", *C_J_Bi)
+print("C_K(Bi):", *C_K_Bi)
 
 dC_Bi = np.zeros((1, n))  # dC(Bi)
 for i in range(n):
     dC_Bi[0, i] = C_J_Bi[0, i] - C_K_Bi[0, i]
-print(dC_Bi)
+print("dC(Bi):", *dC_Bi)
 
+# Пример 1 (2.3)
+print("-----Пример 1 (2.3)-----")
 X = 1859107  # Это число в примере масштабируется на 2717
+print("X:", X)
 X_rns = calculate_x_rns(X, n, p)  # Перевод числа Х в СОК
-print(X_rns)
+print("X in RNS:", *X_rns)
 
 a, b, dC_X_mod20 = 0, 0, 0
 for i in range(n):
@@ -168,25 +174,51 @@ C_J_mod23 = a % 23
 C_K_mod11 = b % 11
 C_K_mod13 = b % 13
 C_K_mod19 = b % 19
-print(C_J_mod7)
-print(C_J_mod17)
-print(C_J_mod23)
-print(C_K_mod11)
-print(C_K_mod13)
-print(C_K_mod19)
+print("C_J(X)mod7:", C_J_mod7)
+print("C_J(X)mod17:", C_J_mod17)
+print("C_J(X)mod23:", C_J_mod23)
+print("C_K(X)mod11:", C_K_mod11)
+print("C_K(X)mod13:", C_K_mod13)
+print("C_K(X)mod19:", C_K_mod19)
 
 dC_X_mod20 %= 20
-print(dC_X_mod20)
+print("dC(X)mod20:", dC_X_mod20)
 
 C_J_mod11 = (C_K_mod11 + dC_X_mod20) % 11
 C_J_mod13 = (C_K_mod13 + dC_X_mod20) % 13
 C_J_mod19 = (C_K_mod19 + dC_X_mod20) % 19
-print(C_J_mod11, C_J_mod13, C_J_mod19)
+print("C_J(X)mod11:", C_J_mod11)
+print("C_J(X)mod13:", C_J_mod13)
+print("C_J(X)mod19:", C_J_mod19)
 
 C_J_X_rns = np.array([[C_J_mod7, C_J_mod11, C_J_mod13, C_J_mod17, C_J_mod19, C_J_mod23]], np.float64)
-print(C_J_X_rns)
+print("C_J(X) in RNS:", *C_J_X_rns)
 
 C_J_X = 0
 for i in range(n):                                      # Перевод числа в позиционную систему счисления
     C_J_X += C_J_X_rns[0, i] * P_i[0, i] * P_i_1[0, i]  # с использованием КТО
-print(C_J_X % P)
+print("C_J(X):", C_J_X % P)
+
+# Пример 2 (3.3)
+print("-----Пример 2 (3.3)-----")
+X = 6432750
+print("X:", X)
+X_rns = calculate_x_rns(X, n, p)
+print("X in RNS:", *X_rns)
+sigma = X % 2
+
+for i in range(n):
+    a += X_rns[0, i] * C_J_Bi[0, i]
+    b += X_rns[0, i] * C_K_Bi[0, i]
+C_J_mod7 = a % 7
+C_J_mod17 = a % 17
+C_J_mod23 = a % 23
+C_K_mod11 = b % 11
+C_K_mod13 = b % 13
+C_K_mod19 = b % 19
+print("C_J(X)mod7:", C_J_mod7)
+print("C_J(X)mod17:", C_J_mod17)
+print("C_J(X)mod23:", C_J_mod23)
+print("C_K(X)mod11:", C_K_mod11)
+print("C_K(X)mod13:", C_K_mod13)
+print("C_K(X)mod19:", C_K_mod19)
