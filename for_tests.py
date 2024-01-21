@@ -170,7 +170,6 @@ dC_X_mod20 = X_rns * dC_Bi
 dC_X_mod20 = dC_X_mod20.sum() % 20
 print("dC(X)mod20:", dC_X_mod20)
 
-
 for i in P_K[1]:
     elem = X_rns * C_K_Bi
     print(f"C_K(X)mod{int(p[0, i])}: {elem.sum() % p[0, i]}")
@@ -178,43 +177,8 @@ for i in P_K[1]:
     print(f"C_J(X)mod{int(p[0, i])}: {elem2.sum() % p[0, i]}")
     C_J_X_rns[0, i] = elem2.sum() % p[0, i]
 
-# for i in P_K[1]:
-#     elem = X_rns * C_K_Bi
-#     print(f"C_K(X)mod{int(p[0, i])}: {elem.sum() % p[0, i]}")
-#     C_J_X_rns[0, i] = elem.sum() % p[0, i]
-#
-# for i in P_K[1]:
-#     elem = C_J_X_rns[0, i] + (dC_X_mod20 % p[0, i])
-#     print(f"C_J(X)mod{int(p[0, i])}: {elem.sum() % p[0, i]}")
-#     C_J_X_rns[0, i] = elem.sum() % p[0, i]
-
 print('C_J(X) in RNS:', *C_J_X_rns)
-
 
 C_J_X = C_J_X_rns * P_i * P_i_1
 C_J_X = C_J_X.sum()
 print("C_J(X):", C_J_X % P)
-
-# Пример 2 (3.3)
-# print("-----Пример 2 (3.3)-----")
-# X = 6432750
-# print("X:", X)
-# X_rns = calculate_x_rns(X, n, p)
-# print("X in RNS:", *X_rns)
-# sigma = X % 2
-#
-# for i in range(n):
-#     a += X_rns[0, i] * C_J_Bi[0, i]
-#     b += X_rns[0, i] * C_K_Bi[0, i]
-# C_J_mod7 = a % 7
-# C_J_mod17 = a % 17
-# C_J_mod23 = a % 23
-# C_K_mod11 = b % 11
-# C_K_mod13 = b % 13
-# C_K_mod19 = b % 19
-# print("C_J(X)mod7:", C_J_mod7)
-# print("C_J(X)mod17:", C_J_mod17)
-# print("C_J(X)mod23:", C_J_mod23)
-# print("C_K(X)mod11:", C_K_mod11)
-# print("C_K(X)mod13:", C_K_mod13)
-# print("C_K(X)mod19:", C_K_mod19)
